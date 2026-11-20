@@ -8,6 +8,7 @@ COPY backend/requirements-slim.lock ./
 RUN pip install --no-cache-dir --no-deps --require-hashes -r requirements-slim.lock
 COPY package.json CHANGELOG.md /app/
 COPY backend/ ./
+COPY static/static/ /app/static/static/
 RUN mkdir -p /app/backend/data
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=5s --start-period=120s CMD curl -fsS http://127.0.0.1:8080/health || exit 1
