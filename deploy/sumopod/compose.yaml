@@ -1,0 +1,31 @@
+name: openc
+services:
+  backend:
+    build:
+      context: ../..
+      dockerfile: deploy/sumopod/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    env_file: .env
+    environment:
+      WEBUI_NAME: OpenC
+      WEBUI_URL: https://openc-jet.vercel.app
+      WEBUI_AUTH: "true"
+      ENABLE_SIGNUP: "false"
+      ENABLE_OLLAMA_API: "false"
+      ENABLE_OPENAI_API: "true"
+      ENABLE_COMPRESSION_MIDDLEWARE: "false"
+      UVICORN_WORKERS: "1"
+      WEBUI_SECRET_KEY_FILE: /app/backend/data/.webui_secret_key
+      CORS_ALLOW_ORIGIN: https://openc-jet.vercel.app;https://openc-condoriano98s-projects.vercel.app
+    volumes:
+      - data:/app/backend/data
+    mem_limit: 1200m
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  data:
