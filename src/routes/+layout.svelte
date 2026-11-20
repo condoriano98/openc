@@ -172,7 +172,7 @@
 	};
 
 	const setupSocket = async (enableWebsocket) => {
-		const _socket = io(`${WEBUI_BASE_URL}` || undefined, {
+		const _socket = io(import.meta.env.VITE_WEBUI_SOCKET_URL || `${WEBUI_BASE_URL}` || undefined, {
 			reconnection: true,
 			reconnectionDelay: 1000,
 			reconnectionDelayMax: 5000,
