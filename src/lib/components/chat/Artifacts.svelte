@@ -11,6 +11,7 @@
 	import Icon from './FileNav/Icon.svelte';
 	import Tooltip from '../common/Tooltip.svelte';
 	import SvgPanZoom from '../common/SVGPanZoom.svelte';
+	import CanvasEditor from '../openc/CanvasEditor.svelte';
 
 	export let overlay = false;
 	export let artifacts: Readable<{ type: string; content: string }[]>;
@@ -34,6 +35,13 @@
 		const codeIdx = contents.findIndex((content) => content.content.includes(selection.code));
 		if (codeIdx !== -1) selectedContentIdx = codeIdx;
 	}
+
+	// OpenC Canvas: hand edits per version, shown in place of the generated content.
+	let editing = false;
+	let edits: Record<number, string> = {};
+	$: current = contents[selectedContentIdx]
+		? { ...contents[selectedContentIdx], content: edits[selectedContentIdx] ?? contents[selectedContentIdx].content }
+		: null;
 
 	let copied = false;
 	let iframeElement: HTMLIFrameElement;
@@ -87,7 +95,7 @@
 	};
 
 	const downloadArtifact = () => {
-		const blob = new Blob([contents[selectedContentIdx].content], { type: 'text/html' });
+		const blob = new Blob([current?.content ?? ''], { type: 'text/html' });
 		const url = URL.createObjectURL(blob);
 		const a = document.createElement('a');
 		a.href = url;
@@ -133,7 +141,7 @@
 							aria-label={copied ? $i18n.t('Copied') : $i18n.t('Copy')}
 							class="flex h-5 w-5 items-center justify-center rounded text-gray-400 transition-colors duration-100 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
 							on:click={() => {
-								copyToClipboard(contents[selectedContentIdx].content);
+								copyToClipboard(current?.content ?? '');
 								copied = true;
 								setTimeout(() => {
 									copied = false;
@@ -149,7 +157,31 @@
 							><Icon name="download" size={11} strokeWidth={1.4} /></button
 						>
 					</Tooltip>
-					{#if contents[selectedContentIdx].type === 'iframe'}
+					<Tooltip content={editing ? $i18n.t('Preview') : $i18n.t('Edit')}>
+						<button
+							aria-label={editing ? $i18n.t('Preview') : $i18n.t('Edit')}
+							aria-pressed={editing}
+							data-openc="canvas-toggle"
+							class="flex h-5 items-center justify-center rounded px-1 text-[0.7rem] transition-colors duration-100 {editing
+								? 'text-sky-500 dark:text-sky-300'
+								: 'text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300'}"
+							on:click={() => (editing = !editing)}
+							>{editing ? $i18n.t('Preview') : $i18n.t('Edit')}</button
+						>
+					</Tooltip>
+					{#if edits[selectedContentIdx] !== undefined}
+						<Tooltip content={$i18n.t('Discard edits')}>
+							<button
+								aria-label={$i18n.t('Discard edits')}
+								class="flex h-5 items-center justify-center rounded px-1 text-[0.7rem] text-gray-400 hover:text-red-500"
+								on:click={() => {
+									const { [selectedContentIdx]: _, ...rest } = edits;
+									edits = rest;
+								}}>{$i18n.t('Revert')}</button
+							>
+						</Tooltip>
+					{/if}
+					{#if contents[selectedContentIdx].type === 'iframe' && !editing}
 						<Tooltip content={$i18n.t('Open in full screen')}>
 							<button
 								aria-label={$i18n.t('Open in full screen')}
@@ -170,12 +202,19 @@
 			<div class=" h-full flex flex-col">
 				{#if contents.length > 0}
 					<div class="max-w-full w-full h-full">
-						{#if contents[selectedContentIdx].type === 'iframe'}
+						{#if editing && current}
+							<CanvasEditor
+								content={current.content}
+								type={current.type}
+								on:change={(e) => (edits = { ...edits, [selectedContentIdx]: e.detail })}
+								on:done={() => (editing = false)}
+							/>
+						{:else if contents[selectedContentIdx].type === 'iframe'}
 							<iframe
 								bind:this={iframeElement}
 								title={$i18n.t('Content')}
 								srcdoc={injectCsp(
-									contents[selectedContentIdx].content,
+									current?.content ?? '',
 									$config?.ui?.iframe_csp ?? ''
 								)}
 								class="w-full border-0 h-full rounded-none"
@@ -193,7 +232,7 @@
 						{:else if contents[selectedContentIdx].type === 'svg'}
 							<SvgPanZoom
 								className=" w-full h-full max-h-full overflow-hidden"
-								svg={contents[selectedContentIdx].content}
+								svg={current?.content ?? ''}
 							/>
 						{/if}
 					</div>

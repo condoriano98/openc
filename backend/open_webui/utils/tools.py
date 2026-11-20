@@ -758,6 +758,12 @@ async def get_builtin_tools(
     if is_builtin_tool_enabled('visualizations', False):
         builtin_functions.append(render_visualization)
 
+    # OpenC: slide deck generator (.pptx)
+    if is_builtin_tool_enabled('slides', True):
+        from open_webui.openc.slides import create_slides
+
+        builtin_functions.append(create_slides)
+
     # Time utilities - available for date calculations
     if is_builtin_tool_enabled('time'):
         builtin_functions.extend([get_current_timestamp, calculate_timestamp])
