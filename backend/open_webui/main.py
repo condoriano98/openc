@@ -389,6 +389,11 @@ async def lifespan(app: FastAPI):
 
     await import_legacy_config_json()
     await seed_registered_defaults()
+
+    # OpenC: register DashScope / OpenCode Zen connections from env vars.
+    from open_webui.openc.providers import sync_env_provider_connections
+
+    await sync_env_provider_connections()
     await app.state.oauth_manager.initialize()
     from open_webui.utils.mfa import validate_mfa_configuration
 

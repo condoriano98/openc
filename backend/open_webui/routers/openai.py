@@ -1578,6 +1578,12 @@ async def generate_chat_completion(
         payload['continue_final_message'] = True
         payload['add_generation_prompt'] = False
 
+    # OpenC: DashScope thinking / built-in search parameters.
+    if api_config.get('provider') == 'dashscope' and not is_responses:
+        from open_webui.openc.dashscope import apply_dashscope_params
+
+        payload = apply_dashscope_params(payload, (metadata or {}).get('features'))
+
     if api_config.get('azure') or api_config.get('provider') == 'azure':
         # Only set api-key header if not using Azure Entra ID authentication
         auth_type = api_config.get('auth_type', 'bearer')

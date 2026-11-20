@@ -2377,6 +2377,11 @@ async def process_chat_payload(request, form_data, user, metadata, model):
             raise Exception(f'{e}')
 
     features = form_data.pop('features', None) or {}
+
+    # OpenC: response styles and Qwen-native web search.
+    from open_webui.openc.features import apply_openc_features
+
+    form_data, features = apply_openc_features(form_data, features, model, models, add_or_update_system_message)
     extra_params['__features__'] = features
     if features:
         if 'voice' in features and features['voice']:
@@ -4956,6 +4961,16 @@ async def streaming_chat_response_handler(response, ctx):
                             if data:
                                 if 'event' in data:
                                     await event_emitter(data.get('event', {}))
+
+                                # OpenC: Qwen built-in search results -> citation sources.
+                                if isinstance(data, dict) and 'search_info' in data:
+                                    from open_webui.openc.dashscope import search_info_to_sources
+
+                                    for source in search_info_to_sources(
+                                        data.pop('search_info'),
+                                        metadata.setdefault('openc_seen_sources', []),
+                                    ):
+                                        await event_emitter({'type': 'source', 'data': source})
 
                                 if 'selected_model_id' in data:
                                     form_data['model'] = data['selected_model_id']
