@@ -960,15 +960,17 @@ if LICENSE_PUBLIC_KEY:
 # visual, textual, symbolic identifiers, metadata, and surrounding UI.
 # Do not alter, remove, obscure, or replace it except as LICENSE permits:
 # https://docs.openwebui.com/license.
-WEBUI_NAME = os.getenv('WEBUI_NAME', 'Open WebUI')
-if WEBUI_NAME != 'Open WebUI':
-    WEBUI_NAME += ' (Open WebUI)'
+# OpenC rebrand: permitted by LICENSE clause 4(i) for deployments with
+# 50 or fewer end users in any rolling 30-day period. Deployments above that
+# limit must restore the Open WebUI branding or obtain permission/an
+# enterprise license from Open WebUI Inc.
+WEBUI_NAME = os.getenv('WEBUI_NAME', 'OpenC')
 
 # LICENSE covers this Open WebUI branding surface, including this favicon
 # and any visual, textual, or symbolic identifiers it preserves.
 # Do not alter, remove, obscure, or replace it except as LICENSE permits:
 # https://docs.openwebui.com/license.
-WEBUI_FAVICON_URL = 'https://openwebui.com/favicon.png'
+WEBUI_FAVICON_URL = os.getenv('WEBUI_FAVICON_URL', '/static/favicon.png')
 WEBUI_BUILD_HASH = os.getenv('WEBUI_BUILD_HASH', 'dev-build')
 TRUSTED_SIGNATURE_KEY = os.getenv('TRUSTED_SIGNATURE_KEY', '')
 

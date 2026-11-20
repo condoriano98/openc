@@ -170,6 +170,13 @@
 			</div>
 
 			<div class="text-xs text-gray-400 dark:text-gray-500">
+				OpenC is based on
+				<a href="https://github.com/open-webui/open-webui" target="_blank" class="underline"
+					>Open WebUI</a
+				>.
+			</div>
+
+			<div class="text-xs text-gray-400 dark:text-gray-500">
 				<!-- LICENSE covers this Open WebUI copyright attribution.
 				Do not alter, remove, obscure, or replace it except as LICENSE permits:
 				https://docs.openwebui.com/license. -->

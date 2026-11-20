@@ -345,17 +345,17 @@ class CORSStaticFiles(StaticFiles):
 
 if LOG_FORMAT != 'json':
     banner = rf"""
- ██████╗ ██████╗ ███████╗███╗   ██╗    ██╗    ██╗███████╗██████╗ ██╗   ██╗██╗
-██╔═══██╗██╔══██╗██╔════╝████╗  ██║    ██║    ██║██╔════╝██╔══██╗██║   ██║██║
-██║   ██║██████╔╝█████╗  ██╔██╗ ██║    ██║ █╗ ██║█████╗  ██████╔╝██║   ██║██║
-██║   ██║██╔═══╝ ██╔══╝  ██║╚██╗██║    ██║███╗██║██╔══╝  ██╔══██╗██║   ██║██║
-╚██████╔╝██║     ███████╗██║ ╚████║    ╚███╔███╔╝███████╗██████╔╝╚██████╔╝██║
- ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═══╝     ╚══╝╚══╝ ╚══════╝╚═════╝  ╚═════╝ ╚═╝
+ ██████╗ ██████╗ ███████╗███╗   ██╗ ██████╗
+██╔═══██╗██╔══██╗██╔════╝████╗  ██║██╔════╝
+██║   ██║██████╔╝█████╗  ██╔██╗ ██║██║
+██║   ██║██╔═══╝ ██╔══╝  ██║╚██╗██║██║
+╚██████╔╝██║     ███████╗██║ ╚████║╚██████╗
+ ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝
 
 
-v{VERSION} - building the best AI user interface.
+v{VERSION} - multi-model AI chat, based on Open WebUI.
 {f'Commit: {WEBUI_BUILD_HASH}' if WEBUI_BUILD_HASH != 'dev-build' else ''}
-https://github.com/open-webui/open-webui
+https://github.com/condoriano98/openc
 """
     try:
         print(banner)
@@ -364,7 +364,7 @@ https://github.com/open-webui/open-webui
         # LICENSE covers this Open WebUI CLI identifier.
         # Do not alter, remove, obscure, or replace it except as LICENSE permits:
         # https://docs.openwebui.com/license.
-        print(f'Open WebUI v{VERSION} - building the best AI user interface.\nhttps://github.com/open-webui/open-webui')
+        print(f'OpenC v{VERSION} (based on Open WebUI) - https://github.com/condoriano98/openc')
 
 
 @asynccontextmanager
@@ -551,7 +551,7 @@ apply_orjson_http_json()
 # Do not alter, remove, obscure, or replace it except as LICENSE permits:
 # https://docs.openwebui.com/license.
 app = FastAPI(
-    title='Open WebUI',
+    title='OpenC',
     docs_url='/docs' if ENV == 'dev' else None,
     openapi_url='/openapi.json' if ENV == 'dev' else None,
     redoc_url=None,
@@ -3049,7 +3049,7 @@ async def get_manifest_json():
         return {
             'name': app.state.WEBUI_NAME,
             'short_name': app.state.WEBUI_NAME,
-            'description': f'{app.state.WEBUI_NAME} is an open, extensible, user-friendly interface for AI that adapts to your workflow.',
+            'description': f'{app.state.WEBUI_NAME} is a multi-model AI chat platform based on Open WebUI.',
             'start_url': '/',
             'display': 'standalone',
             'background_color': '#343541',

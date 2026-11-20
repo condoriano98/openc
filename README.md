@@ -1,3 +1,22 @@
+# OpenC
+
+**OpenC** is a multi-user AI chat platform that brings the best of ChatGPT, Claude and Kimi
+together on top of [Open WebUI](https://github.com/open-webui/open-webui). It is tuned for
+**Alibaba Cloud Model Studio (DashScope / Qwen)** and **OpenCode Zen**.
+
+See [`docs/OPENC.md`](docs/OPENC.md) for the features OpenC adds, its environment variables
+and setup steps.
+
+> **License & branding.** OpenC is a fork of Open WebUI and is distributed under the
+> [Open WebUI License](LICENSE). The OpenC rebrand is permitted by clause 4(i) only for
+> deployments with **50 or fewer end users in any rolling 30-day period**. Larger deployments
+> must restore the Open WebUI branding or obtain permission / an enterprise license from
+> Open WebUI Inc. All upstream copyright notices are retained.
+
+---
+
+_Upstream Open WebUI README follows._
+
 <h2>Open WebUI</h2>
 
 <p>Open WebUI is <a href="https://docs.openwebui.com/"><strong>a home for AI</strong></a>: an extensible, easy-to-use, self-hosted platform built to run entirely offline. Connect local models through Ollama or use OpenAI-compatible APIs for local and cloud models.</p>
