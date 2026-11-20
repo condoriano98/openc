@@ -9,6 +9,9 @@ services:
       - "127.0.0.1:8080:8080"
     env_file: .env
     environment:
+      WEBUI_ADMIN_EMAIL: ${WEBUI_ADMIN_EMAIL:-}
+      WEBUI_ADMIN_PASSWORD: ${WEBUI_ADMIN_PASSWORD:-}
+      WEBUI_ADMIN_NAME: ${WEBUI_ADMIN_NAME:-Admin}
       WEBUI_NAME: OpenC
       WEBUI_URL: https://openc-jet.vercel.app
       WEBUI_AUTH: "true"
