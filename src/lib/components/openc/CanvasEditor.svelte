@@ -24,7 +24,12 @@
 		selectedText = selectionEnd > selectionStart ? content.slice(selectionStart, selectionEnd) : '';
 	};
 
-	export const buildEditPrompt = (doc: string, change: string, selection: string, language: string) => {
+	export const buildEditPrompt = (
+		doc: string,
+		change: string,
+		selection: string,
+		language: string
+	) => {
 		const scope = selection
 			? `Only change this part of the file (keep everything else identical):\n\`\`\`${language}\n${selection}\n\`\`\`\n\n`
 			: '';
@@ -59,7 +64,7 @@
 		on:select={updateSelection}
 		on:keyup={updateSelection}
 		on:mouseup={updateSelection}
-	/>
+	></textarea>
 
 	{#if chat.submitPrompt}
 		<form

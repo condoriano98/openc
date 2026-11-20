@@ -190,7 +190,11 @@ function parseJSONStringValue(value: unknown): unknown {
 
 function getInlineFileFromToolOutput(callItem?: OutputItem, resultItem?: OutputItem) {
 	// OpenC: create_slides returns the same file shape as display_file.
-	if (!callItem || !resultItem || !['display_file', 'create_slides'].includes(callItem.name ?? '')) {
+	if (
+		!callItem ||
+		!resultItem ||
+		!['display_file', 'create_slides'].includes(callItem.name ?? '')
+	) {
 		return null;
 	}
 

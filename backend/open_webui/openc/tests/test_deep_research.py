@@ -90,7 +90,5 @@ def test_report_prompt_and_source_events_are_numbered():
 
 
 def test_parse_json_object_handles_think_tags_and_prose():
-    assert DR.parse_json_object('<think>{"queries": ["bad"]}</think> ok {"queries": ["good"]}') == {
-        'queries': ['good']
-    }
+    assert DR.parse_json_object('<think>{"queries": ["bad"]}</think> ok {"queries": ["good"]}') == {'queries': ['good']}
     assert DR.parse_json_object('nothing') == {}

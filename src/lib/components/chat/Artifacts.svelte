@@ -40,7 +40,10 @@
 	let editing = false;
 	let edits: Record<number, string> = {};
 	$: current = contents[selectedContentIdx]
-		? { ...contents[selectedContentIdx], content: edits[selectedContentIdx] ?? contents[selectedContentIdx].content }
+		? {
+				...contents[selectedContentIdx],
+				content: edits[selectedContentIdx] ?? contents[selectedContentIdx].content
+			}
 		: null;
 
 	let copied = false;
@@ -213,10 +216,7 @@
 							<iframe
 								bind:this={iframeElement}
 								title={$i18n.t('Content')}
-								srcdoc={injectCsp(
-									current?.content ?? '',
-									$config?.ui?.iframe_csp ?? ''
-								)}
+								srcdoc={injectCsp(current?.content ?? '', $config?.ui?.iframe_csp ?? '')}
 								class="w-full border-0 h-full rounded-none"
 								sandbox="{($settings?.iframeSandboxAllowScripts ?? true)
 									? 'allow-scripts'

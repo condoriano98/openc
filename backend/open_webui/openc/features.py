@@ -39,11 +39,7 @@ def apply_openc_features(
     if block and form_data.get('messages') is not None:
         form_data['messages'] = add_system_message(block, form_data['messages'])
 
-    if (
-        QWEN_NATIVE_SEARCH
-        and features.get('web_search')
-        and get_model_provider(model, models) == 'dashscope'
-    ):
+    if QWEN_NATIVE_SEARCH and features.get('web_search') and get_model_provider(model, models) == 'dashscope':
         # Let Qwen search the web itself instead of Open WebUI's search pipeline.
         features['web_search'] = False
         features['qwen_search'] = True

@@ -14,27 +14,21 @@
 	import PenAlt from '$lib/components/icons/PenAlt.svelte';
 	import Check from '$lib/components/icons/Check.svelte';
 	import XMark from '$lib/components/icons/XMark.svelte';
-	import {
-		opencComposer,
-		STYLE_PRESETS,
-		isDashScopeModel,
-		type OpenCStyle
-	} from '$lib/openc';
+	import { opencComposer, STYLE_PRESETS, isDashScopeModel, type OpenCStyle } from '$lib/openc';
 
 	const i18n: any = getContext('i18n');
 	const { models } = getChatContext();
 
 	export let selectedModelIds: string[] = [];
 
-	$: selected = selectedModelIds
-		.map((id) => $models.find((m: any) => m.id === id))
-		.filter(Boolean);
+	$: selected = selectedModelIds.map((id) => $models.find((m: any) => m.id === id)).filter(Boolean);
 	$: showThinking = selected.some((model) => {
 		if (isDashScopeModel(model)) return true;
 		const baseId = (model as any)?.info?.base_model_id;
 		return !!baseId && isDashScopeModel($models.find((m: any) => m.id === baseId));
 	});
-	$: if (!showThinking && $opencComposer.thinking) opencComposer.update((s) => ({ ...s, thinking: false }));
+	$: if (!showThinking && $opencComposer.thinking)
+		opencComposer.update((s) => ({ ...s, thinking: false }));
 
 	$: showResearch =
 		!!$config?.features?.enable_web_search &&
@@ -120,7 +114,10 @@
 	{/if}
 
 	{#if showResearch}
-		<Tooltip content={$i18n.t('Deep Research: multi-step web research with a cited report')} placement="top">
+		<Tooltip
+			content={$i18n.t('Deep Research: multi-step web research with a cited report')}
+			placement="top"
+		>
 			<button
 				type="button"
 				data-openc="deep-research"
@@ -208,7 +205,7 @@
 							placeholder={$i18n.t('Describe how the assistant should write…')}
 							bind:value={newPrompt}
 							maxlength="4000"
-						/>
+						></textarea>
 						<div class="flex justify-end gap-1">
 							<button
 								type="button"

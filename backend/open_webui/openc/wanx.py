@@ -64,8 +64,17 @@ def parse_task_status(res: dict) -> tuple[str, list[str], str]:
     return status, urls, str(error)
 
 
-async def generate(session, connection: dict, prompt: str, model: str | None, width: int, height: int, n: int = 1,
-                   negative_prompt: str | None = None, ssl=None) -> list[str]:
+async def generate(
+    session,
+    connection: dict,
+    prompt: str,
+    model: str | None,
+    width: int,
+    height: int,
+    n: int = 1,
+    negative_prompt: str | None = None,
+    ssl=None,
+) -> list[str]:
     """Submit a task and wait for it. Returns the generated image URLs."""
     url = base_url(connection.get('url'))
     headers = {'Authorization': f'Bearer {connection.get("key", "")}', 'Content-Type': 'application/json'}
