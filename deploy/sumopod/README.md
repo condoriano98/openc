@@ -10,8 +10,17 @@ Do not remove it. A pre-migration SQLite backup is stored as
 /app/backend/data/pre-frontend-migration.db in that volume.
 
 ## Frontend releases
-Build the public frontend on a build host using the Vercel project build command
-followed by node scripts/package-frontend.mjs. Transfer from that build URL with:
+Build the public frontend on a build host with sufficient RAM (the public Vercel
+project now serves only a redirect, so use a separate build host for updates):
+
+    CYPRESS_INSTALL_BINARY=0 npm ci --legacy-peer-deps --onnxruntime-node-install-cuda=skip
+    npm run crypto:verify
+    npm run pyodide:fetch
+    VERCEL=1 node --max-old-space-size=6144 node_modules/vite/bin/vite.js build
+    node scripts/package-frontend.mjs
+
+Serve the build directory over HTTPS without the repository's Vercel redirect rules.
+Leave VITE_WEBUI_SOCKET_URL unset for a same-origin deployment. Transfer from that URL with:
 
     python3 deploy/sumopod/install-frontend.py https://BUILD_HOST
 
