@@ -121,6 +121,7 @@
 	import Voice from '../icons/Voice.svelte';
 	import Terminal from '../icons/Terminal.svelte';
 	import IntegrationsMenu from './MessageInput/IntegrationsMenu.svelte';
+	import OpenCComposerControls from '$lib/components/openc/ComposerControls.svelte';
 	import TerminalMenu from './MessageInput/TerminalMenu.svelte';
 	import PlusAlt from '../icons/PlusAlt.svelte';
 	import Dropdown from '../common/Dropdown.svelte';
@@ -2894,6 +2895,8 @@
 												</Tooltip>
 											{/if}
 										{/each}
+
+										<OpenCComposerControls {selectedModelIds} />
 
 										{#if showInputSelections && webSearchEnabled && showWebSearchButton && $visibleControls['chat.selected_web_search']}
 											<Tooltip content={$i18n.t('Web Search')} placement="top">

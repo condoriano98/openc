@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getOpenCFeatures } from '$lib/openc';
 	import { getTerminalServers } from '$lib/apis/terminal';
 	import { resolveToolApprovalMode } from '$lib/utils/toolPermissions';
 	import type { AppLayoutContext, TerminalContext } from '$lib/types';
@@ -4949,6 +4950,9 @@
 		if ($settings?.memory ?? $config?.features?.enable_memories ?? false) {
 			features = { ...features, memory: true };
 		}
+
+		// OpenC: thinking, response style and deep research.
+		features = { ...features, ...getOpenCFeatures(($settings as any)?.opencStyles ?? []) };
 
 		return features;
 	};
