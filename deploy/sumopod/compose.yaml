@@ -13,7 +13,7 @@ services:
       WEBUI_ADMIN_PASSWORD: ${WEBUI_ADMIN_PASSWORD:-}
       WEBUI_ADMIN_NAME: ${WEBUI_ADMIN_NAME:-Admin}
       WEBUI_NAME: OpenC
-      WEBUI_URL: https://openc-jet.vercel.app
+      WEBUI_URL: https://openc.43.173.40.109.sslip.io
       WEBUI_AUTH: "true"
       ENABLE_SIGNUP: "false"
       ENABLE_OLLAMA_API: "false"
@@ -21,9 +21,10 @@ services:
       ENABLE_COMPRESSION_MIDDLEWARE: "false"
       UVICORN_WORKERS: "1"
       WEBUI_SECRET_KEY_FILE: /app/backend/data/.webui_secret_key
-      CORS_ALLOW_ORIGIN: https://openc-jet.vercel.app;https://openc-condoriano98s-projects.vercel.app
+      CORS_ALLOW_ORIGIN: https://openc.43.173.40.109.sslip.io;https://openc-jet.vercel.app;https://openc-condoriano98s-projects.vercel.app
     volumes:
       - data:/app/backend/data
+      - ./frontend:/app/build:ro
     mem_limit: 1200m
     logging:
       driver: json-file
