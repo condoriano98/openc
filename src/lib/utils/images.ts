@@ -6,7 +6,8 @@ export const getSupportedImageCapabilities = (
 	type: string,
 	config: { workflow?: string; edit_workflow?: string } = {}
 ): ImageCapabilities => {
-	if (type === 'automatic1111') return { image_generation: true, image_edit: false };
+	if (type === 'automatic1111' || type === 'dashscope')
+		return { image_generation: true, image_edit: false };
 	if (type === 'comfyui') {
 		return { image_generation: !!config.workflow, image_edit: !!config.edit_workflow };
 	}

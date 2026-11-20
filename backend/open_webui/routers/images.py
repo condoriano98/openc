@@ -347,6 +347,11 @@ async def verify_image_connection(request: Request, form_data: ImageConnection, 
             return await get_gemini_connection_models(connection)
         if connection['type'] == 'comfyui':
             return await get_comfyui_connection_models(connection)
+        if connection['type'] == 'dashscope':
+            # OpenC: DashScope has no image-model listing endpoint; offer the known models.
+            from open_webui.openc.wanx import KNOWN_MODELS
+
+            return [{'id': model_id, 'name': model_id} for model_id in KNOWN_MODELS]
         return await get_automatic1111_connection_models(connection)
     except Exception as e:
         log.error(
@@ -769,6 +774,33 @@ async def image_generations(
                     image_data,
                     content_type,
                     {**form_data.model_dump(exclude_none=True), **metadata},
+                    user,
+                )
+                images.append(image_file)
+            return images
+        elif connection['type'] == 'dashscope':
+            # OpenC: Alibaba Wanx / Qwen-Image (async task API).
+            from open_webui.openc import wanx
+
+            urls = await wanx.generate(
+                await get_session(),
+                connection,
+                form_data.prompt,
+                model,
+                width,
+                height,
+                n=form_data.n,
+                negative_prompt=form_data.negative_prompt,
+                ssl=AIOHTTP_CLIENT_SESSION_SSL,
+            )
+            images = []
+            for image_url in urls:
+                image_data, content_type = await get_image_data(image_url)
+                _, image_file = await upload_image(
+                    request,
+                    image_data,
+                    content_type,
+                    {'prompt': form_data.prompt, 'model': model or wanx.DEFAULT_MODEL, **metadata},
                     user,
                 )
                 images.append(image_file)

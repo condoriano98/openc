@@ -29,7 +29,7 @@ IMAGE_CONNECTIONS_CONFIG_KEY = 'images.connections'
 IMAGE_GENERATION_DEFAULT_MODEL_CONFIG_KEY = 'image_generation.default_model'
 IMAGE_EDIT_DEFAULT_MODEL_CONFIG_KEY = 'images.edit.default_model'
 
-IMAGE_CONNECTION_TYPES = ('openai', 'gemini', 'comfyui', 'automatic1111')
+IMAGE_CONNECTION_TYPES = ('openai', 'gemini', 'comfyui', 'automatic1111', 'dashscope')
 
 # The auth types chat model connections offer; only OpenAI compatible image connections use more than a key.
 IMAGE_CONNECTION_AUTH_TYPES = ('none', 'bearer', 'session', 'system_oauth', 'microsoft_entra_id')
@@ -163,7 +163,7 @@ def get_image_connection_capabilities(connection: dict) -> dict[str, bool]:
     """What a connection's models can do: what its type supports (ComfyUI needs the matching
     workflow, AUTOMATIC1111 cannot edit), narrowed by the capabilities the admin turned on."""
     config = connection.get('config') or {}
-    if connection.get('type') == 'automatic1111':
+    if connection.get('type') in ('automatic1111', 'dashscope'):
         supported = {'image_generation': True, 'image_edit': False}
     elif connection.get('type') == 'comfyui':
         supported = {'image_generation': bool(config.get('workflow')), 'image_edit': bool(config.get('edit_workflow'))}

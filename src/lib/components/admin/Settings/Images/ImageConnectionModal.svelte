@@ -24,7 +24,7 @@
 		type ImageCapability
 	} from '$lib/utils/images';
 
-	type ConnectionType = 'openai' | 'gemini' | 'comfyui' | 'automatic1111';
+	type ConnectionType = 'openai' | 'gemini' | 'comfyui' | 'automatic1111' | 'dashscope';
 	type WorkflowNode = { type: string; key: string; node_ids: string };
 
 	export let onSubmit: Function = () => {};
@@ -365,6 +365,7 @@
 									<option value="gemini">{$i18n.t('Gemini')}</option>
 									<option value="comfyui">{$i18n.t('ComfyUI')}</option>
 									<option value="automatic1111">{$i18n.t('AUTOMATIC1111')}</option>
+									<option value="dashscope">{$i18n.t('Alibaba Wanx / Qwen-Image')}</option>
 								</select>
 							</div>
 						</div>
@@ -438,7 +439,9 @@
 										class={`w-full text-sm ${inputClass}`}
 										type="text"
 										bind:value={url}
-										placeholder={connectionType === 'openai' || connectionType === 'gemini'
+										placeholder={connectionType === 'openai' ||
+										connectionType === 'gemini' ||
+										connectionType === 'dashscope'
 											? $i18n.t('API Base URL')
 											: $i18n.t('Enter URL (e.g. http://127.0.0.1:7860/)')}
 										autocomplete="off"
@@ -446,12 +449,18 @@
 											? 'image-connection-openai-urls'
 											: connectionType === 'gemini'
 												? 'image-connection-gemini-urls'
-												: undefined}
+												: connectionType === 'dashscope'
+													? 'image-connection-dashscope-urls'
+													: undefined}
 										required
 									/>
 
 									<datalist id="image-connection-openai-urls">
 										<option value="https://api.openai.com/v1" />
+									</datalist>
+									<datalist id="image-connection-dashscope-urls">
+										<option value="https://dashscope-intl.aliyuncs.com/api/v1" />
+										<option value="https://dashscope.aliyuncs.com/api/v1" />
 									</datalist>
 									<datalist id="image-connection-gemini-urls">
 										<option value="https://generativelanguage.googleapis.com/v1beta" />
