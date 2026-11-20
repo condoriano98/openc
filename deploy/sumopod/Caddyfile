@@ -1,5 +1,8 @@
 openc.43.173.40.109.sslip.io {
+    encode zstd gzip
     header X-Content-Type-Options nosniff
+    @immutable path /_app/immutable/*
+    header @immutable Cache-Control "public, max-age=31536000, immutable"
     reverse_proxy backend:8080 {
         flush_interval -1
     }
