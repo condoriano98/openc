@@ -1,37 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://openc.43.173.40.109.sslip.io/api/:path*"
-    },
-    {
-      "source": "/openai/:path*",
-      "destination": "https://openc.43.173.40.109.sslip.io/openai/:path*"
-    },
-    {
-      "source": "/ollama/:path*",
-      "destination": "https://openc.43.173.40.109.sslip.io/ollama/:path*"
-    },
-    {
-      "source": "/oauth/:path*",
-      "destination": "https://openc.43.173.40.109.sslip.io/oauth/:path*"
-    },
-    {
-      "source": "/static/:path*",
-      "destination": "https://openc.43.173.40.109.sslip.io/static/:path*"
-    },
-    {
-      "source": "/cache/:path*",
-      "destination": "https://openc.43.173.40.109.sslip.io/cache/:path*"
-    },
-    {
-      "source": "/user.png",
-      "destination": "https://openc.43.173.40.109.sslip.io/user.png"
-    },
+  "redirects": [
     {
       "source": "/:path*",
-      "destination": "/index.html"
+      "destination": "https://openc.43.173.40.109.sslip.io/:path*",
+      "permanent": false
     }
   ]
 }
