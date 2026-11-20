@@ -1,0 +1,6 @@
+openc.43.173.40.109.sslip.io {
+    header X-Content-Type-Options nosniff
+    reverse_proxy backend:8080 {
+        flush_interval -1
+    }
+}
