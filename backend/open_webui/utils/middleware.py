@@ -2382,6 +2382,33 @@ async def process_chat_payload(request, form_data, user, metadata, model):
     from open_webui.openc.features import apply_openc_features
 
     form_data, features = apply_openc_features(form_data, features, model, models, add_or_update_system_message)
+
+    # OpenC: Deep Research runs a multi-round web research loop before answering.
+    if features.get('deep_research') and (
+        getattr(user, 'role', None) == 'admin'
+        or await has_permission(getattr(user, 'id', ''), 'features.web_search', await Config.get('user.permissions'))
+    ):
+        from open_webui.openc.deep_research import deep_research_handler
+
+        try:
+            form_data = await deep_research_handler(
+                request, form_data, extra_params, user, add_or_update_system_message
+            )
+            # The research already searched the web; skip the single-shot search.
+            features = {**features, 'web_search': False, 'qwen_search': False}
+        except Exception as e:
+            log.exception(e)
+            await event_emitter(
+                {
+                    'type': 'status',
+                    'data': {
+                        'action': 'deep_research',
+                        'description': 'Deep Research failed',
+                        'done': True,
+                        'error': True,
+                    },
+                }
+            )
     extra_params['__features__'] = features
     if features:
         if 'voice' in features and features['voice']:
