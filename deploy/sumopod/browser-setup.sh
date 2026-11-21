@@ -98,7 +98,7 @@ stage() {
     unit "$lane" novnc "ai-$lane-vnc.service" \
       "/usr/bin/websockify --web /usr/share/novnc 127.0.0.1:$novnc 127.0.0.1:$vnc"
     unit "$lane" mcp "ai-$lane-xvfb.service ai-$lane-wm.service" \
-      "$app/node/bin/node $app/mcp/node_modules/.bin/mcp-server-playwright --browser chrome --sandbox --host 127.0.0.1 --port $mcp --user-data-dir $home/profile --viewport-size 1280,740 --shared-browser-context --ignore-roots --output-dir $home/work"
+      "$app/node/bin/node $app/mcp/node_modules/@playwright/mcp/cli.js --browser chrome --sandbox --host 127.0.0.1 --port $mcp --user-data-dir $home/profile --viewport-size 1280,740 --shared-browser-context --ignore-roots --output-dir $home/work"
   done
   cat >/etc/systemd/system/ai-browser-caddy.service <<UNIT
 [Unit]
@@ -123,7 +123,7 @@ WantedBy=multi-user.target
 UNIT
   chmod 644 /etc/systemd/system/ai-*.service
   systemctl daemon-reload
-  systemctl start ai-{claude,chatgpt}-{mcp,novnc}.service
+  systemctl restart ai-{claude,chatgpt}-{mcp,novnc}.service
   printf 'Both lanes are staged on loopback. Run smoke next.\n'
 }
 
