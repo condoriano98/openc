@@ -218,13 +218,13 @@ PY
 configure() {
   local pass confirmation hash tmp secret name i
   [[ -t 0 ]] || die 'Set the viewer password in the interactive VPS console.'
-  read -rsp 'Viewer password (16 to 72 bytes): ' pass
+  IFS= read -rsp 'Viewer password (10 to 72 bytes): ' pass
   printf '\n'
-  read -rsp 'Repeat viewer password: ' confirmation
+  IFS= read -rsp 'Repeat viewer password: ' confirmation
   printf '\n'
-  [[ $pass == "$confirmation" && ${#pass} -ge 16 && ${#pass} -le 72 ]] ||
-    die 'Use matching passwords of 16 to 72 characters.'
-  hash=$(printf '%s' "$pass" | "$app/caddy" hash-password)
+  [[ $pass == "$confirmation" && ${#pass} -ge 10 && ${#pass} -le 72 ]] ||
+    die 'Use matching passwords of 10 to 72 characters.'
+  hash=$(printf '%s\n' "$pass" | "$app/caddy" hash-password)
   unset pass confirmation
   tmp=$(mktemp "$app/Caddyfile.XXXXXXXX")
   install -d -m 700 "$app/keys"
