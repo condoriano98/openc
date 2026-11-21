@@ -225,7 +225,7 @@ configure() {
   [[ $pass == "$confirmation" && ${#pass} -ge 10 && ${#pass} -le 72 ]] ||
     die 'Use matching passwords of 10 to 72 characters.'
   hash=$(printf '%s\n' "$pass" | "$app/caddy" hash-password)
-  unset pass confirmation
+  unset confirmation
   tmp=$(mktemp "$app/Caddyfile.XXXXXXXX")
   install -d -m 700 "$app/keys"
   {
@@ -267,6 +267,34 @@ CFG
     done
   } > "$app/SECRETS.txt"
   printf '%s\n' "$domain" > "$app/domain"
+  if [[ $action == reset-viewer ]]; then
+    systemctl restart ai-browser-caddy.service
+    printf '%s' "$pass" | python3 -c '
+import base64
+import sys
+import time
+import urllib.request
+
+domain = sys.argv[1]
+auth = base64.b64encode(b"iman:" + sys.stdin.buffer.read()).decode("ascii")
+for lane in ("claude", "chatgpt"):
+    for attempt in range(5):
+        try:
+            request = urllib.request.Request(
+                f"https://{domain}/view-{lane}/vnc.html",
+                headers={"Authorization": "Basic " + auth},
+            )
+            with urllib.request.urlopen(request, timeout=5) as response:
+                if response.status == 200 and b"noVNC" in response.read():
+                    break
+        except OSError:
+            time.sleep(1)
+    else:
+        sys.exit(f"{lane}: HTTPS viewer sign-in could not be verified.")
+    print(f"{lane}: Viewer accepted username iman and the new password.")
+' "$domain"
+  fi
+  unset pass
   printf 'Viewer password configured for iman. Connector URLs are in %s/SECRETS.txt.\n' "$app"
 }
 
@@ -297,6 +325,11 @@ case "$action" in
   stage) stage ;;
   smoke) smoke ;;
   configure) configure ;;
+  reset-viewer)
+    [[ -s $app/domain ]] || die 'Run configure first.'
+    read -r domain < "$app/domain"
+    configure
+    ;;
   publish) publish ;;
-  *) die "Usage: sudo bash setup.sh {backup|stage|smoke|configure [hostname]|publish}" ;;
+  *) die "Usage: sudo bash setup.sh {backup|stage|smoke|configure [hostname]|reset-viewer|publish}" ;;
 esac
