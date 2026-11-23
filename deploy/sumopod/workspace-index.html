@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Private Workspace — Jiwati</title>
+<style>
+:root{color-scheme:light;--paper:#fbf7ef;--ink:#202c29;--muted:#52615a;--green:#1a5145;--line:#ccc9bb}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.65 system-ui,sans-serif}
+.wrap{width:min(100% - 2.5rem,49rem);margin:auto}
+header{border-bottom:1px solid var(--line);padding:1rem 0}
+.brand{font:700 1.5rem Georgia,serif}.brand span{font:500 .83rem system-ui;color:var(--muted);margin-left:1rem}
+main{padding:clamp(3rem,10vw,6rem) 0 4rem}
+h1{font:500 clamp(2.9rem,9vw,5.6rem)/.98 Georgia,serif;letter-spacing:-.06em;margin:0;max-width:12ch}
+.lead{font-size:1.08rem;color:var(--muted);max-width:36ch;margin:1.5rem 0 2.5rem}
+nav{border-top:1px solid var(--line)}
+a{display:flex;justify-content:space-between;gap:1rem;align-items:center;padding:1rem .3rem;border-bottom:1px solid var(--line);text-decoration:none;color:var(--green);font-weight:650}
+a:hover{background:#eaeedf;text-decoration:underline}
+a:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+small{color:var(--muted)}
+</style>
+</head>
+<body>
+<header><div class="wrap brand">Jiwati <span>Private access</span></div></header>
+<main class="wrap">
+<h1>Private Workspace</h1>
+<p class="lead">Choose a viewer below. Each opens a private browser and requires your workspace sign-in.</p>
+<nav aria-label="Private browser viewers">
+<a href="/view-a/vnc.html?path=view-a/websockify&amp;autoconnect=1&amp;resize=scale">Open Viewer A <span aria-hidden="true">↗</span></a>
+<a href="/view-b/vnc.html?path=view-b/websockify&amp;autoconnect=1&amp;resize=scale">Open Viewer B <span aria-hidden="true">↗</span></a>
+</nav>
+</main>
+</body>
+</html>
